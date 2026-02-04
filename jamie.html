@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Important Question</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6e6;
+      text-align: center;
+      padding-top: 50px;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    canvas {
+      border: 2px solid #ff4d4d;
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      margin: 12px;
+      cursor: pointer;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+  <h1>Jamie, Can you take me to the fish and chips?</h1>
+
+  <canvas id="heartCanvas" width="400" height="400"></canvas>
+
+  <div>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <p id="responseText"></p>
+
+  <script>
+    const canvas = document.getElementById("heartCanvas");
+    const ctx = canvas.getContext("2d");
+    const noBtn = document.getElementById("noBtn");
+
+    let shrink = 1;
+
+    function drawHeart(x, y, size, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x, y - size/2, x - size, y - size/2, x - size, y + size/4);
+      ctx.bezierCurveTo(x - size, y + size, x, y + size*1.4, x, y + size*1.8);
+      ctx.bezierCurveTo(x, y + size*1.4, x + size, y + size, x + size, y + size/4);
+      ctx.bezierCurveTo(x + size, y - size/2, x, y - size/2, x, y);
+      ctx.fill();
+    }
+
+    drawHeart(200, 150, 50, "red");
+
+    document.getElementById("yesBtn").addEventListener("click", () => {
+      document.getElementById("responseText").textContent = "Excellent choice. I’m starving 🐟🍟";
+
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    });
+
+    noBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 100);
+
+      shrink *= 0.9;
+      noBtn.style.transform = `translate(${x}px, ${y}px) scale(${shrink})`;
+    });
+
+    noBtn.addEventListener("click", () => {
+      document.getElementById("responseText").textContent =
+        "You were never meant to click that.";
+    });
+  </script>
+
+</body>
+</html>
